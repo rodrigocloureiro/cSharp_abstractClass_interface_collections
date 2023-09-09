@@ -1,6 +1,6 @@
 ﻿namespace exe02lista
 {
-    public class Conta
+    public abstract class Conta
     {
         private double _saldo;
         private string _nome;
