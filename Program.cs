@@ -14,6 +14,24 @@ public class Program
             seguros.Add(new SeguroDeVida($"Nome{Math.Floor((double)new Random().Next(100))}"));
         }
 
+        List<ITributavel> tributaveis = new List<ITributavel>();
+        //tributaveis.AddRange(contas.Where(conta => conta is ITributavel).Select(conta => conta as ITributavel).ToList());
+        tributaveis.AddRange(contas.OfType<ITributavel>()); // retorna apenas os elementos que podem ser convetidos para o tipo
+        tributaveis.AddRange(seguros);
+
+        foreach (ITributavel clienteTributavel in tributaveis.OrderBy(tributavel => tributavel.CalculaTributos()).Reverse())
+        {
+            if (clienteTributavel is Conta conta)
+            {
+                Console.Write($"Nome: {conta.Nome} - Saldo: R$ {conta.ObterSaldo():F2} - ");
+            }
+            else if (clienteTributavel is SeguroDeVida seguro)
+            {
+                Console.Write($"Nome: {seguro.Nome} - ");
+            }
+            Console.Write($"Tributo: R$ {clienteTributavel.CalculaTributos():F2}\n");
+        }
+
         Console.ReadKey();
     }
 }
